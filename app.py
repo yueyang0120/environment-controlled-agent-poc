@@ -246,6 +246,31 @@ st.markdown("""
     .demo-button:hover {
         background-color: #2980b9;
     }
+    
+    /* Demo prompt button styling */
+    .stButton > button {
+        width: 100% !important;
+        text-align: left !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        height: auto !important;
+        min-height: 40px !important;
+        padding: 8px 12px !important;
+        margin-bottom: 4px !important;
+        border-radius: 8px !important;
+        font-size: 13px !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Sidebar expander content styling */
+    .streamlit-expanderContent {
+        padding-top: 8px !important;
+    }
+    
+    /* Ensure consistent spacing for expander items */
+    .streamlit-expanderContent .stButton {
+        margin-bottom: 4px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -886,7 +911,14 @@ def main():
         for category, prompts in st.session_state.demo_prompts.items():
             with st.expander(category):
                 for prompt in prompts:
-                    if st.button(prompt, key=f"demo_{prompt[:20]}", help=f"Click to use: {prompt}"):
+                    # Use consistent button styling for all demo prompts
+                    button_key = f"demo_{hash(prompt)}"  # Use hash for unique keys
+                    if st.button(
+                        prompt, 
+                        key=button_key, 
+                        help=f"Click to use: {prompt}",
+                        use_container_width=True  # Make buttons full width for consistency
+                    ):
                         # Check if there's an extended version of this prompt
                         extended_prompt = st.session_state.extended_prompts.get(prompt, prompt)
                         st.session_state.selected_prompt = extended_prompt
