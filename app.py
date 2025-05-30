@@ -863,19 +863,11 @@ def main():
     
     # Feature introduction with compelling description
     st.markdown("""
-    <div style="
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        margin: 20px 0;
-        text-align: center;
-    ">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;">
         <h3 style="margin-top: 0; color: white;">🧠 Experience AI That Thinks Out Loud</h3>
         <p style="font-size: 16px; margin-bottom: 15px; color: #f0f0f0;">
             Watch as our advanced AI agent processes your requests with complete transparency
         </p>
-        
         <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 20px;">
             <div style="flex: 1; min-width: 200px; margin: 10px;">
                 <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
@@ -898,13 +890,7 @@ def main():
     
     # Call-to-action for demo prompts
     st.markdown("""
-    <div style="
-        background-color: #e8f4fd;
-        border-left: 4px solid #1f77b4;
-        padding: 15px;
-        margin: 15px 0;
-        border-radius: 0 10px 10px 0;
-    ">
+    <div style="background-color: #e8f4fd; border-left: 4px solid #1f77b4; padding: 15px; margin: 15px 0; border-radius: 0 10px 10px 0;">
         <h4 style="margin-top: 0; color: #1f77b4;">🚀 Ready to see it in action?</h4>
         <p style="margin-bottom: 8px; color: #2c5282;">
             <strong>👈 Try the demo prompts in the sidebar!</strong> Click any category to explore:
