@@ -307,7 +307,7 @@ if 'demo_prompts' not in st.session_state:
 # Extended prompts mapping for full content
 if 'extended_prompts' not in st.session_state:
     st.session_state.extended_prompts = {
-        "Send bi-weekly update to Ray": """Send an email to my manager Ray (ray.han@sap.com) summarizing my biweekly update for the period from May 5 to May 23.
+        "Send bi-weekly update to Ray": """Send an email to my manager Ray (ray.han@sap.com) summarizing my biweekly update for the period from May 5 to May 23. Make sure the email is sent!
 
 Content to include:
 
@@ -855,26 +855,22 @@ def main():
         return
     
     # Check if .env file exists and provide guidance
-    if not os.path.exists('.env'):
-        st.info("💡 For better security, create a .env file with your credentials.")
-        with st.expander("🔧 Setup .env file"):
+    if not os.path.exists('.env') and not os.getenv("OPENAI_API_KEY"):
+        st.info("💡 This app uses environment variables for configuration. In Streamlit Cloud, these are set in the app settings under 'Secrets'.")
+        with st.expander("🔧 Local Development Setup (Optional)"):
             st.markdown("""
-            **Steps to create .env file:**
+            **For local development only:**
             1. Copy `env_template.txt` to `.env`
-            2. Edit `.env` with your actual credentials:
-               - OPENAI_API_KEY=your_key_here
-               - GMAIL_EMAIL=your_email@gmail.com
-               - GMAIL_APP_PASSWORD=your_app_password
-               - TAVILY_API_KEY=your_tavily_key (optional)
+            2. Edit `.env` with your actual credentials
             3. Restart the application
             
-            **Note:** Never commit the .env file to version control!
+            **For Streamlit Cloud:** Set your API keys in the app settings → Secrets section.
             """)
     
     # Check Tavily API key (optional but recommended for web search)
     if not os.getenv("TAVILY_API_KEY"):
-        st.info("💡 For web search functionality, you can set your Tavily API key.")
-        with st.expander("🔑 Set Tavily API Key (Optional)"):
+        with st.expander("🔑 Optional: Web Search Configuration"):
+            st.markdown("For enhanced web search functionality, add your Tavily API key in the app settings.")
             st.markdown("Get your free API key at [tavily.com](https://tavily.com)")
             tavily_key = st.text_input("Enter your Tavily API key:", type="password", key="tavily_key")
             if st.button("Set Tavily Key") and tavily_key:
@@ -946,79 +942,113 @@ def main():
             st.markdown("Get your free API key at [tavily.com](https://tavily.com)")
     
     # Main content area
-    col1, col2 = st.columns([3, 1])
+    # Query input section
+    st.header("💬 Your Query")
     
-    with col1:
-        # Query input
-        st.header("💬 Your Query")
-        
-        # Use selected demo prompt (if any)
-        default_query = st.session_state.get('selected_prompt', '')
-        query = st.text_area(
-            "Enter your query:",
-            value=default_query,
-            height=100,
-            placeholder="e.g., 'Calculate 25 * 8 + 15' or 'Send an email to john@example.com'"
-        )
-        
-        # Control buttons
-        col_btn1, col_btn2, col_btn3 = st.columns([2, 1, 1])
-        with col_btn1:
-            run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
-        with col_btn2:
-            if st.session_state.agent_state['confirmation_needed']:
-                st.write("⏳ Waiting for confirmation...")
-        with col_btn3:
-            clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
-        
-        if clear_button:
-            st.session_state.agent_state = {
-                'thinking_process': [],
-                'is_running': False,
-                'result': None,
-                'current_loop': 0,
-                'current_step': None,
-                'confirmation_needed': False,
-                'confirmation_data': None,
-                'user_response': None,
-                'agent_instance': None
-            }
-            if 'selected_prompt' in st.session_state:
-                del st.session_state.selected_prompt
-            if 'show_modify' in st.session_state:
-                del st.session_state.show_modify
-            st.rerun()
+    # Use selected demo prompt (if any)
+    default_query = st.session_state.get('selected_prompt', '')
+    query = st.text_area(
+        "Enter your query:",
+        value=default_query,
+        height=100,
+        placeholder="e.g., 'Calculate 25 * 8 + 15' or 'Send an email to john@example.com'"
+    )
     
-    with col2:
+    # Control buttons and status in aligned columns
+    col_main1, col_main2, col_main3, col_status = st.columns([3, 1, 1, 2])
+    
+    with col_main1:
+        run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
+    
+    with col_main2:
+        clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
+    
+    with col_main3:
+        # Empty column for spacing
+        pass
+    
+    with col_status:
         # Live status display
         if st.session_state.agent_state['is_running']:
             current_step = st.session_state.agent_state.get('current_step', 'Processing')
             st.markdown(f"""
-            <div class="live-status">
+            <div style="
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+                margin: 0;
+            ">
                 🤖 {current_step}
             </div>
             """, unsafe_allow_html=True)
         elif st.session_state.agent_state['confirmation_needed']:
             st.markdown("""
-            <div style="background-color: #fff3e0; padding: 15px; border-radius: 10px; text-align: center;">
-                <h4>⏳ Waiting for Confirmation</h4>
-                <p>Please review and confirm the action below</p>
+            <div style="
+                background-color: #fff3e0;
+                color: #e65100;
+                padding: 8px 12px;
+                border-radius: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+                border: 2px solid #ffcc02;
+            ">
+                ⏳ Waiting for Confirmation
             </div>
             """, unsafe_allow_html=True)
         elif st.session_state.agent_state['result']:
             st.markdown("""
-            <div style="background-color: #d4edda; padding: 15px; border-radius: 10px; text-align: center;">
-                <h4>✅ Processing Complete</h4>
-                <p>Agent has completed the task</p>
+            <div style="
+                background-color: #d4edda;
+                color: #155724;
+                padding: 8px 12px;
+                border-radius: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+                border: 2px solid #4caf50;
+            ">
+                ✅ Complete
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
-            <div style="background-color: #e2e3e5; padding: 15px; border-radius: 10px; text-align: center;">
-                <h4>⏳ Ready</h4>
-                <p>Enter a query and click run</p>
+            <div style="
+                background-color: #e2e3e5;
+                color: #495057;
+                padding: 8px 12px;
+                border-radius: 20px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 12px;
+                border: 2px solid #6c757d;
+            ">
+                ⏳ Ready
             </div>
             """, unsafe_allow_html=True)
+    
+    # Clear button functionality
+    if clear_button:
+        st.session_state.agent_state = {
+            'thinking_process': [],
+            'is_running': False,
+            'result': None,
+            'current_loop': 0,
+            'current_step': None,
+            'confirmation_needed': False,
+            'confirmation_data': None,
+            'user_response': None,
+            'agent_instance': None
+        }
+        if 'selected_prompt' in st.session_state:
+            del st.session_state.selected_prompt
+        if 'show_modify' in st.session_state:
+            del st.session_state.show_modify
+        st.rerun()
     
     # Start agent execution
     if run_button and query:
