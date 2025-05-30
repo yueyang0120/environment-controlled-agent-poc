@@ -1030,7 +1030,7 @@ def main():
     query = st.text_area(
         "Enter your query:",
         value=default_query,
-        height=100,
+        height=260,
         placeholder="e.g., 'Calculate 25 * 8 + 15' or 'Send an email to john@example.com'"
     )
     
