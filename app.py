@@ -859,7 +859,69 @@ def handle_confirmation_request(confirmation_data: Dict, agent_runner: Streamlit
 def main():
     # Title
     st.title("🤖 Environment-Controlled Agent")
-    st.markdown("### *Advanced AI Agent with Real-time Thinking Process & Interactive Confirmation*")
+    st.markdown("### *Advanced AI Agent with Real-time Thinking Process & Human in the Loop*")
+    
+    # Feature introduction with compelling description
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        text-align: center;
+    ">
+        <h3 style="margin-top: 0; color: white;">🧠 Experience AI That Thinks Out Loud</h3>
+        <p style="font-size: 16px; margin-bottom: 15px; color: #f0f0f0;">
+            Watch as our advanced AI agent processes your requests with complete transparency
+        </p>
+        
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 20px;">
+            <div style="flex: 1; min-width: 200px; margin: 10px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
+                <strong>Real-time Thinking</strong><br>
+                <small>See every step of the AI's reasoning process as it happens</small>
+            </div>
+            <div style="flex: 1; min-width: 200px; margin: 10px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">🛠️</div>
+                <strong>Smart Tool Selection</strong><br>
+                <small>AI intelligently chooses the right tools for each task</small>
+            </div>
+            <div style="flex: 1; min-width: 200px; margin: 10px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">👤</div>
+                <strong>Human Control</strong><br>
+                <small>Review and approve sensitive actions before execution</small>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Call-to-action for demo prompts
+    st.markdown("""
+    <div style="
+        background-color: #e8f4fd;
+        border-left: 4px solid #1f77b4;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 0 10px 10px 0;
+    ">
+        <h4 style="margin-top: 0; color: #1f77b4;">🚀 Ready to see it in action?</h4>
+        <p style="margin-bottom: 8px; color: #2c5282;">
+            <strong>👈 Try the demo prompts in the sidebar!</strong> Click any category to explore:
+        </p>
+        <div style="margin-left: 20px; color: #2c5282;">
+            • 🧮 <strong>Math Calculations</strong> - Watch AI solve complex problems step-by-step<br>
+            • 📧 <strong>Email Tasks</strong> - See human-in-the-loop confirmation for sensitive actions<br>
+            • 🌤️ <strong>Weather & Location</strong> - Experience intelligent web search with real-time data<br>
+            • 💰 <strong>Financial Data</strong> - Get current stock prices and market information<br>
+            • 🔍 <strong>Knowledge Queries</strong> - Ask questions and see detailed reasoning<br>
+            • 🎨 <strong>Creative Tasks</strong> - Generate content with transparent thinking process
+        </div>
+        <p style="margin-top: 12px; margin-bottom: 0; color: #1f77b4; font-weight: bold;">
+            Each demo showcases different AI capabilities and thinking patterns! 🎯
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Check OpenAI API key
     if not os.getenv("OPENAI_API_KEY"):
@@ -975,14 +1037,14 @@ def main():
     
     # Main content area
     # Query input section
-    st.header("💬 Your Query")
-    
-    # Use selected demo prompt (if any)
-    default_query = st.session_state.get('selected_prompt', '')
-    query = st.text_area(
-        "Enter your query:",
-        value=default_query,
-        height=100,
+        st.header("💬 Your Query")
+        
+        # Use selected demo prompt (if any)
+        default_query = st.session_state.get('selected_prompt', '')
+        query = st.text_area(
+            "Enter your query:",
+            value=default_query,
+            height=100,
         placeholder="e.g., 'Calculate 25 * 8 + 15' or 'Send an email to john@example.com'"
     )
     
@@ -990,11 +1052,11 @@ def main():
     col_main1, col_main2, col_main3, col_status = st.columns([3, 1, 1, 2])
     
     with col_main1:
-        run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
+            run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
     
     with col_main2:
-        clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
-    
+            clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
+        
     with col_main3:
         # Empty column for spacing
         pass
