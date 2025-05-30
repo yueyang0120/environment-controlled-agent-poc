@@ -334,6 +334,8 @@ if 'extended_prompts' not in st.session_state:
     st.session_state.extended_prompts = {
         "Send bi-weekly update to Ray": """Send an email to my manager Ray (ray.han@sap.com) summarizing my biweekly update for the period from May 5 to May 23. Make sure the email is sent!
 
+        Refine the email to be more professional and concise.
+
 Content to include:
 
 **Platform**
