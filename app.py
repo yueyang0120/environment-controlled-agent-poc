@@ -1023,14 +1023,14 @@ def main():
     
     # Main content area
     # Query input section
-        st.header("💬 Your Query")
-        
-        # Use selected demo prompt (if any)
-        default_query = st.session_state.get('selected_prompt', '')
-        query = st.text_area(
-            "Enter your query:",
-            value=default_query,
-            height=100,
+    st.header("💬 Your Query")
+    
+    # Use selected demo prompt (if any)
+    default_query = st.session_state.get('selected_prompt', '')
+    query = st.text_area(
+        "Enter your query:",
+        value=default_query,
+        height=100,
         placeholder="e.g., 'Calculate 25 * 8 + 15' or 'Send an email to john@example.com'"
     )
     
@@ -1038,11 +1038,11 @@ def main():
     col_main1, col_main2, col_main3, col_status = st.columns([3, 1, 1, 2])
     
     with col_main1:
-            run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
+        run_button = st.button("🚀 Run Agent", type="primary", disabled=st.session_state.agent_state['is_running'])
     
     with col_main2:
-            clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
-        
+        clear_button = st.button("🗑️ Clear", disabled=st.session_state.agent_state['is_running'])
+    
     with col_main3:
         # Empty column for spacing
         pass
@@ -1052,61 +1052,25 @@ def main():
         if st.session_state.agent_state['is_running']:
             current_step = st.session_state.agent_state.get('current_step', 'Processing')
             st.markdown(f"""
-            <div style="
-                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-                color: white;
-                padding: 8px 12px;
-                border-radius: 20px;
-                text-align: center;
-                font-weight: bold;
-                font-size: 12px;
-                margin: 0;
-            ">
+            <div style="background: linear-gradient(45deg, #ff6b6b, #4ecdc4); color: white; padding: 8px 12px; border-radius: 20px; text-align: center; font-weight: bold; font-size: 12px; margin: 0;">
                 🤖 {current_step}
             </div>
             """, unsafe_allow_html=True)
         elif st.session_state.agent_state['confirmation_needed']:
             st.markdown("""
-            <div style="
-                background-color: #fff3e0;
-                color: #e65100;
-                padding: 8px 12px;
-                border-radius: 20px;
-                text-align: center;
-                font-weight: bold;
-                font-size: 12px;
-                border: 2px solid #ffcc02;
-            ">
+            <div style="background-color: #fff3e0; color: #e65100; padding: 8px 12px; border-radius: 20px; text-align: center; font-weight: bold; font-size: 12px; border: 2px solid #ffcc02;">
                 ⏳ Waiting for Confirmation
             </div>
             """, unsafe_allow_html=True)
         elif st.session_state.agent_state['result']:
             st.markdown("""
-            <div style="
-                background-color: #d4edda;
-                color: #155724;
-                padding: 8px 12px;
-                border-radius: 20px;
-                text-align: center;
-                font-weight: bold;
-                font-size: 12px;
-                border: 2px solid #4caf50;
-            ">
+            <div style="background-color: #d4edda; color: #155724; padding: 8px 12px; border-radius: 20px; text-align: center; font-weight: bold; font-size: 12px; border: 2px solid #4caf50;">
                 ✅ Complete
             </div>
             """, unsafe_allow_html=True)
         else:
             st.markdown("""
-            <div style="
-                background-color: #e2e3e5;
-                color: #495057;
-                padding: 8px 12px;
-                border-radius: 20px;
-                text-align: center;
-                font-weight: bold;
-                font-size: 12px;
-                border: 2px solid #6c757d;
-            ">
+            <div style="background-color: #e2e3e5; color: #495057; padding: 8px 12px; border-radius: 20px; text-align: center; font-weight: bold; font-size: 12px; border: 2px solid #6c757d;">
                 ⏳ Ready
             </div>
             """, unsafe_allow_html=True)
