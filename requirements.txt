@@ -8,3 +8,4 @@ pydantic>=2.5.2
 streamlit>=1.29.0
 python-dotenv>=1.0.0
 langchain-tavily>=0.2.0 
+pytest>=8.0.0

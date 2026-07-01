@@ -916,7 +916,7 @@ def main():
         st.error("⚠️ OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
         st.markdown("""
         **🔧 Setup Instructions:**
-        1. Copy `env_template.txt` to `.env`
+        1. Copy `.env.example` to `.env`
         2. Edit `.env` and add your OpenAI API key
         3. Restart the application
         
@@ -935,7 +935,7 @@ def main():
         with st.expander("🔧 Local Development Setup (Optional)"):
             st.markdown("""
             **For local development only:**
-            1. Copy `env_template.txt` to `.env`
+            1. Copy `.env.example` to `.env`
             2. Edit `.env` with your actual credentials
             3. Restart the application
             
